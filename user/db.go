@@ -31,11 +31,20 @@ func NewMongo(props ConnProps) (*Repo, error) {
 	}
 
 	db := c.Database(props.DB)
+	coll := db.Collection(props.Coll)
+
+	_, err = coll.Indexes().CreateOne(
+		context.Background(),
+		mongo.IndexModel{
+			Keys:    bson.D{{Key: "email", Value: 1}},
+			Options: options.Index().SetUnique(true),
+		},
+	)
 
 	return &Repo{
 		client: c,
 		db:     db,
-		coll:   db.Collection(props.Coll),
+		coll:   coll,
 	}, nil
 }
 

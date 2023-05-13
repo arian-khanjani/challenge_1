@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"math/big"
 	"net/http"
 )
@@ -16,12 +17,15 @@ func main() {
 
 func generateSalt(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
-		//w.Write([]byte("welcome"))
 		salt, err := generateRandomString()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-		w.Write([]byte(salt))
+		marshal, err := json.Marshal(salt)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		w.Write(marshal)
 	} else {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
@@ -39,4 +43,17 @@ func generateRandomString() (string, error) {
 	}
 
 	return string(ret), nil
+}
+
+func generateRandomSalt2() ([]byte, error) {
+	var salt = make([]byte, 12)
+
+	_, err := rand.Read(salt[:])
+
+	if err != nil {
+		return nil, err
+	}
+
+	return salt, nil
+
 }
