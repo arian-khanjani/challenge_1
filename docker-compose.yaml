@@ -1,23 +1,32 @@
-version: "3"
+version: "3.1"
 
 services:
   salt:
     build: ./salt
+    environment:
+      - PORT=${SALT_PORT}
     ports:
-      - "3000:3000"
+      - "${SALT_PORT}:${SALT_PORT}"
   user:
+#    dns:
+#      - "178.22.122.100"
+#      - "185.51.200.2"
+#    network_mode: "bridge"
     build: ./user
+    environment:
+      - PORT=${USER_PORT}
+      - URI=${URI}
+      - DB=${DB}
+      - COLL=${COLL}
     ports:
-      - "3001:3001"
+      - "${USER_PORT}:${USER_PORT}"
   db:
     image: dockerhub.ir/mongo
     environment:
-      - MONGO_INITDB_DATABASE=challenge
-      - MONGO_INITDB_ROOT_USERNAME=dATeRMinCOgM
-      - MONGO_INITDB_ROOT_PASSWORD=1pO2xHFkyR9S
+      - MONGO_INITDB_DATABASE=${DB}
+      - MONGO_INITDB_ROOT_USERNAME=${USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${PASSWORD}
       - PUID=1000
       - PGID=1000
-    volumes:
-      - store-mongodb-plugin-vol:/data/db
     ports:
-      - "27017-27019:27017-27019"
+      - "${DB_PORT}:${DB_PORT}"

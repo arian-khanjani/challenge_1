@@ -14,7 +14,7 @@ type ConnProps struct {
 	Coll string
 }
 
-func NewMongo(props ConnProps) (*Repo, error) {
+func NewMongo(props *ConnProps) (*Repo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 

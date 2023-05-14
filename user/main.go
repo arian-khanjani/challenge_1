@@ -5,11 +5,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 )
 
@@ -28,13 +30,14 @@ type Repo struct {
 var repository *Repo
 
 func main() {
+	port := loadEnv("PORT")
+	uri := loadEnv("URI")
+	db := loadEnv("DB")
+	coll := loadEnv("COLL")
+
 	// initiate mongodb
 	var err error
-	repository, err = NewMongo(ConnProps{
-		URI:  "mongodb://dATeRMinCOgM:1pO2xHFkyR9S@localhost:27017",
-		DB:   "challenge_1",
-		Coll: "users",
-	})
+	repository, err = NewMongo(&ConnProps{URI: uri, DB: db, Coll: coll})
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -44,10 +47,18 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Post("/create-user", createUser)
 	r.Get("/get-user/{email}", getUser)
-	err = http.ListenAndServe(":3001", r)
+	err = http.ListenAndServe(fmt.Sprintf(":%s", port), r)
 	if err != nil {
 		panic(err)
 	}
+}
+
+func loadEnv(key string) string {
+	v := os.Getenv(key)
+	if v == "" {
+		log.Fatalln(fmt.Errorf("$%s env is undefined", key))
+	}
+	return v
 }
 
 const emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"

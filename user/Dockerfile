@@ -1,12 +1,12 @@
 FROM golang:alpine
 
 WORKDIR /user
-ADD . /user
+COPY . /user
+ENV PORT $USER_PORT
 
-RUN ls -lha
 RUN go get -d -v
 RUN go install -v
 
-EXPOSE 3001
+EXPOSE $PORT
 
 ENTRYPOINT /go/bin/user

@@ -3,13 +3,22 @@ package main
 import (
 	"crypto/rand"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"log"
 	"math/big"
 	"net/http"
+	"os"
 )
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatalln(errors.New("$PORT env undefined"))
+	}
+
 	http.HandleFunc("/generate-salt", generateSalt)
-	err := http.ListenAndServe(":3000", nil)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +54,7 @@ func generateRandomString() (string, error) {
 	return string(ret), nil
 }
 
-func generateRandomSalt2() ([]byte, error) {
+func generateRandomByte() ([]byte, error) {
 	var salt = make([]byte, 12)
 
 	_, err := rand.Read(salt[:])
