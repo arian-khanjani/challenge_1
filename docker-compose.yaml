@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  salt:
+    build: ./salt
+    ports:
+      - "3000:3000"
+  user:
+    build: ./user
+    ports:
+      - "3001:3001"
+  db:
+    image: dockerhub.ir/mongo
+    environment:
+      - MONGO_INITDB_DATABASE=challenge
+      - MONGO_INITDB_ROOT_USERNAME=dATeRMinCOgM
+      - MONGO_INITDB_ROOT_PASSWORD=1pO2xHFkyR9S
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - store-mongodb-plugin-vol:/data/db
+    ports:
+      - "27017-27019:27017-27019"

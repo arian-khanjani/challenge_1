@@ -1,4 +1,4 @@
-# Exercise
+# simple-microservice
 You need to create two HTTP services that will interact with each other.
 
 ## Service 1

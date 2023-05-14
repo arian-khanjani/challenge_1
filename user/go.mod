@@ -1,4 +1,4 @@
-module user
+module simple-microservice
 
 go 1.19
 

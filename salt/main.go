@@ -55,5 +55,4 @@ func generateRandomSalt2() ([]byte, error) {
 	}
 
 	return salt, nil
-
 }
