@@ -30,7 +30,7 @@ type Repo struct {
 var repository *Repo
 
 func main() {
-	port := loadEnv("PORT")
+	port := loadEnv("USER_PORT")
 	uri := loadEnv("URI")
 	db := loadEnv("DB")
 	coll := loadEnv("COLL")

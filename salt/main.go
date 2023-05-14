@@ -12,9 +12,9 @@ import (
 )
 
 func main() {
-	port := os.Getenv("PORT")
+	port := os.Getenv("SALT_PORT")
 	if port == "" {
-		log.Fatalln(errors.New("$PORT env undefined"))
+		log.Fatalln(errors.New("SALT_PORT env undefined"))
 	}
 
 	http.HandleFunc("/generate-salt", generateSalt)

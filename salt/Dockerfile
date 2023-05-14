@@ -2,11 +2,10 @@ FROM golang:alpine
 
 WORKDIR /salt
 COPY . /salt
-ENV PORT $SALT_PORT
 
 RUN go get -d -v
 RUN go install -v
 
-EXPOSE $PORT
+EXPOSE $SALT_PORT
 
 ENTRYPOINT /go/bin/salt

@@ -4,7 +4,7 @@ services:
   salt:
     build: ./salt
     environment:
-      - PORT=${SALT_PORT}
+      - SALT_PORT=${SALT_PORT}
     ports:
       - "${SALT_PORT}:${SALT_PORT}"
   user:
@@ -14,7 +14,7 @@ services:
 #    network_mode: "bridge"
     build: ./user
     environment:
-      - PORT=${USER_PORT}
+      - USER_PORT=${USER_PORT}
       - URI=${URI}
       - DB=${DB}
       - COLL=${COLL}
